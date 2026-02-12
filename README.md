@@ -1,73 +1,69 @@
-# React + TypeScript + Vite
+# zod-based-form
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A dynamic, schema-driven form builder for React, powered by Zod and React Hook Form.
 
-Currently, two official plugins are available:
+## Features
+- 🚀 **Schema-Driven**: Generate complex forms directly from Zod schemas.
+- ⚡ **Dynamic Rendering**: Automatically maps Zod types to appropriate UI components.
+- 🎨 **Shadcn UI Integrated**: Beautifully styled using Radix UI and Tailwind CSS.
+- 🔔 **Sonner Alerts**: Built-in notifications for form actions.
+- 📦 **NPM Ready**: Light weight and optimized for tree-shaking.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Installation
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install zod-based-form zod react-hook-form
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Usage
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```tsx
+import { DynamicForm } from 'zod-based-form';
+import * as z from 'zod';
+import 'zod-based-form/style.css';
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+const schema = z.object({
+  username: z.string().min(3),
+  email: z.string().email(),
+  role: z.enum(['admin', 'user']),
+});
+
+function App() {
+  const handleSubmit = (data) => {
+    console.log(data);
+  };
+
+  return (
+    <DynamicForm 
+      schema={schema} 
+      onSubmit={handleSubmit} 
+      title="User Registration"
+      submitLabel="Create Account"
+    />
+  );
+}
 ```
+
+## UI Components
+This library includes several built-in Shadcn components for form rendering. It also integrates `Sonner` for alerts.
+
+Make sure to include the `Toaster` component in your app root to see notifications:
+
+```tsx
+import { Toaster } from 'sonner';
+
+function Root() {
+  return (
+    <>
+      <App />
+      <Toaster richColors />
+    </>
+  );
+}
+```
+
+## Documentation
+For detailed schema usage and customization, please refer to the [documentation](src/common/form/documentation.md).
+
+## License
+MIT

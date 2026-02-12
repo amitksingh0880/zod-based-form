@@ -10,6 +10,7 @@ import { RenderField } from './util/RenderField';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 import { JsonPopup } from '@/components/ui/json-popup';
+import { toast } from 'sonner';
 
 // Main DynamicForm component
 interface DynamicFormProps<T extends z.ZodTypeAny> {
@@ -59,7 +60,7 @@ export const DynamicForm = <T extends z.ZodTypeAny>({
     // Try to wrap non-object schemas in an object
     if (schema instanceof z.ZodString || schema instanceof z.ZodNumber || schema instanceof z.ZodBoolean) {
       console.warn(`Single field schema detected, wrapping in object`);
-  schemaToUse = z.object({ value: schema as unknown as z.ZodTypeAny });
+      schemaToUse = z.object({ value: schema as unknown as z.ZodTypeAny });
     } else {
       console.error(`Schema must be a ZodObject for form generation:`, schema);
       return (
@@ -107,13 +108,8 @@ export const DynamicForm = <T extends z.ZodTypeAny>({
     };
     collectErrors(errors);
     setErrorSummary(allErrors);
-    console.log('Form errors:', errors);
-    console.log('Error summary updated:', allErrors);
   }, [errors, labels]);
 
-  console.log('Rendering DynamicForm with schema:', schema);
-  console.log('Schema to use:', schemaToUse);
-  console.log('Schema shape:', (schemaToUse as unknown as z.ZodObject<any>).shape);
 
   // Heuristic to determine if schema should span full width (complex container)
   const isComplex = (s: z.ZodTypeAny): boolean => {
@@ -198,63 +194,64 @@ export const DynamicForm = <T extends z.ZodTypeAny>({
             <Skeleton className="h-10 w-full" />
           </div>
         ) : (
-        <FormProvider {...methods}>
-          <Form {...methods}>
-            <form
-              onSubmit={handleSubmit((data) => {
-                // show popup with JSON
-                try {
-                  setPopupData(data);
-                  setPopupOpen(true);
-                } catch (e) {
-                  console.warn('Failed to open JSON popup', e);
-                }
-                // still call user's onSubmit
-                try {
-                  onSubmit && onSubmit(data);
-                } catch (err) {
-                  console.error('onSubmit threw error', err);
-                }
-              })}
-              className="space-y-10"
-            >
-              {/* Simple scalar fields grid */}
-              {simpleEntries.length > 0 && (
-                <div className="grid gap-6 md:grid-cols-2">
-                  {simpleEntries.map(([key, childSchema]) => (
-                    <div key={key} className="min-w-0">
-                      <RenderField
-                        schema={childSchema as z.ZodTypeAny}
-                        name={key}
-                        control={control}
-                        labels={labels}
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
+          <FormProvider {...methods}>
+            <Form {...methods}>
+              <form
+                onSubmit={handleSubmit((data) => {
+                  // show popup with JSON
+                  try {
+                    setPopupData(data);
+                    setPopupOpen(true);
+                    // toast.success('Form submitted successfully'); // Will add import above
+                  } catch (e) {
+                    // ignore
+                  }
+                  // still call user's onSubmit
+                  try {
+                    onSubmit && onSubmit(data);
+                  } catch (err) {
+                    // ignore
+                  }
+                })}
+                className="space-y-10"
+              >
+                {/* Simple scalar fields grid */}
+                {simpleEntries.length > 0 && (
+                  <div className="grid gap-6 md:grid-cols-2">
+                    {simpleEntries.map(([key, childSchema]) => (
+                      <div key={key} className="min-w-0">
+                        <RenderField
+                          schema={childSchema as z.ZodTypeAny}
+                          name={key}
+                          control={control}
+                          labels={labels}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
 
-              {/* Complex container fields full width */}
-              {complexEntries.map(([key, childSchema]) => (
-                <div key={key} className="space-y-6">
-                  <RenderField
-                    schema={childSchema as z.ZodTypeAny}
-                    name={key}
-                    control={control}
-                    labels={labels}
-                  />
-                </div>
-              ))}
+                {/* Complex container fields full width */}
+                {complexEntries.map(([key, childSchema]) => (
+                  <div key={key} className="space-y-6">
+                    <RenderField
+                      schema={childSchema as z.ZodTypeAny}
+                      name={key}
+                      control={control}
+                      labels={labels}
+                    />
+                  </div>
+                ))}
 
-              <div className="pt-2">
-                <Button type="submit" disabled={isSubmitting} className="w-full">
-                  {isSubmitting ? 'Submitting…' : submitLabel}
-                </Button>
-              </div>
-            </form>
-            <JsonPopup data={popupData} open={popupOpen} onClose={() => setPopupOpen(false)} />
-          </Form>
-        </FormProvider>
+                <div className="pt-2">
+                  <Button type="submit" disabled={isSubmitting} className="w-full">
+                    {isSubmitting ? 'Submitting…' : submitLabel}
+                  </Button>
+                </div>
+              </form>
+              <JsonPopup data={popupData} open={popupOpen} onClose={() => setPopupOpen(false)} />
+            </Form>
+          </FormProvider>
         )}
       </CardContent>
     </Card>

@@ -1,9 +1,8 @@
 import React from 'react'
 
-// --- Select ---
 export const Select = ({ children, onValueChange }: any) => (
   <div data-testid="mock-select"
-       onSelectChange={(e: any) => onValueChange?.(e.detail)}>{children}</div>
+    onSelectChange={(e: any) => onValueChange?.(e.detail)}>{children}</div>
 )
 export const SelectTrigger = (p: any) => <button aria-label="select-trigger" {...p} />
 export const SelectValue = ({ placeholder }: any) => <span>{placeholder ?? ''}</span>
