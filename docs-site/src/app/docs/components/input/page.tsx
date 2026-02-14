@@ -44,7 +44,19 @@ export default function InputDocs() {
                         <Terminal className="w-3.5 h-3.5" />
                         <span>schema.ts</span>
                     </div>
-                    <button className="text-zinc-500 hover:text-white transition-colors">
+                    <button
+                        onClick={async () => {
+                            const code = `const schema = z.object({
+  email: z.string().email({
+    message: "Explicit email validation error message"
+  })
+});`;
+                            await navigator.clipboard.writeText(code);
+                            const { toast } = await import('sonner');
+                            toast.success('Copied to clipboard!');
+                        }}
+                        className="text-zinc-500 hover:text-white transition-colors"
+                    >
                         <Copy className="w-4 h-4" />
                     </button>
                 </div>

@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ArrowRight, CheckCircle2, Terminal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 const steps = [
     {
@@ -90,10 +91,12 @@ export default function WalkthroughPage() {
                 >
                     <h2 className="text-3xl font-bold text-white mb-4">Ready to go deeper?</h2>
                     <p className="text-white/80 mb-8 text-lg">Check out our full API reference for advanced configuration.</p>
-                    <Button size="lg" className="rounded-full bg-white text-black hover:bg-zinc-100 px-10 font-bold group">
-                        Explore API reference
-                        <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </Button>
+                    <Link href="/docs">
+                        <Button size="lg" className="rounded-full bg-white text-black hover:bg-zinc-100 px-10 font-bold group">
+                            Explore API reference
+                            <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        </Button>
+                    </Link>
                 </motion.div>
             </div>
         </div>

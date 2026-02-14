@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ExternalLink, Terminal } from 'lucide-react';
+import Link from 'next/link';
 
 export default function DocsPage() {
     return (
@@ -23,20 +24,24 @@ export default function DocsPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
-                <Card className="p-6 bg-zinc-900/50 border-white/5 hover:bg-zinc-900/80 transition-all group cursor-pointer">
-                    <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-indigo-400 flex items-center gap-2">
-                        Quick Start
-                        <ExternalLink className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-all" />
-                    </h3>
-                    <p className="text-zinc-400 text-sm">Get up and running with a basic form in under 2 minutes.</p>
-                </Card>
-                <Card className="p-6 bg-zinc-900/50 border-white/5 hover:bg-zinc-900/80 transition-all group cursor-pointer">
-                    <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-purple-400 flex items-center gap-2">
-                        Why use it?
-                        <ExternalLink className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-all" />
-                    </h3>
-                    <p className="text-zinc-400 text-sm">Understand the philosophy behind declarative form generation.</p>
-                </Card>
+                <Link href="/walkthrough">
+                    <Card className="p-6 bg-zinc-900/50 border-white/5 hover:bg-zinc-900/80 transition-all group cursor-pointer">
+                        <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-indigo-400 flex items-center gap-2">
+                            Quick Start
+                            <ExternalLink className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-all" />
+                        </h3>
+                        <p className="text-zinc-400 text-sm">Get up and running with a basic form in under 2 minutes.</p>
+                    </Card>
+                </Link>
+                <Link href="/docs">
+                    <Card className="p-6 bg-zinc-900/50 border-white/5 hover:bg-zinc-900/80 transition-all group cursor-pointer">
+                        <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-purple-400 flex items-center gap-2">
+                            Why use it?
+                            <ExternalLink className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-all" />
+                        </h3>
+                        <p className="text-zinc-400 text-sm">Understand the philosophy behind declarative form generation.</p>
+                    </Card>
+                </Link>
             </div>
 
             <h2 className="text-2xl font-bold text-white mb-6">Philosophy</h2>
@@ -70,10 +75,12 @@ export default function DocsPage() {
 
             <div className="flex items-center justify-between pt-12 border-t border-white/5">
                 <div />
-                <Button variant="ghost" className="group text-zinc-400 hover:text-white">
-                    Installation
-                    <ExternalLink className="ml-2 w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                </Button>
+                <Link href="/docs/components/input">
+                    <Button variant="ghost" className="group text-zinc-400 hover:text-white">
+                        Components
+                        <ExternalLink className="ml-2 w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                    </Button>
+                </Link>
             </div>
         </motion.div>
     );
