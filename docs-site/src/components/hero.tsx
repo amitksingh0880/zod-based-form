@@ -64,11 +64,31 @@ export default function Hero() {
                     transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
                     className="flex flex-col sm:flex-row gap-4"
                 >
-                    <Button size="lg" className="h-14 px-8 rounded-full bg-white text-black hover:bg-zinc-200 transition-all font-bold group">
+                    <Button
+                        size="lg"
+                        onClick={() => {
+                            const playground = document.getElementById('playground');
+                            if (playground) {
+                                playground.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
+                        }}
+                        className="h-14 px-8 rounded-full bg-white text-black hover:bg-zinc-200 transition-all font-bold group"
+                    >
                         Start Building
                         <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </Button>
-                    <Button variant="outline" size="lg" className="h-14 px-8 rounded-full border-zinc-800 bg-black hover:bg-zinc-900 text-white transition-all font-semibold">
+                    <Button
+                        variant="outline"
+                        size="lg"
+                        onClick={async () => {
+                            await navigator.clipboard.writeText('npm install zod-based-form');
+                            const { toast } = await import('sonner');
+                            toast.success('Copied to clipboard!', {
+                                description: 'npm install zod-based-form',
+                            });
+                        }}
+                        className="h-14 px-8 rounded-full border-zinc-800 bg-black hover:bg-zinc-900 text-white transition-all font-semibold"
+                    >
                         npm install zod-based-form
                     </Button>
                 </motion.div>

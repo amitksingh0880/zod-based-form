@@ -1,12 +1,14 @@
 import Hero from '@/components/hero';
 import Features from '@/components/features';
 import WalkthroughPreview from '@/components/walkthrough-preview';
+import Playground from '@/components/playground';
 
 export default function Home() {
   return (
     <div className="flex flex-col">
       <Hero />
       <Features />
+      <Playground />
       <WalkthroughPreview />
 
       {/* Footer */}

@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ChevronRight } from 'lucide-react';
+import Link from 'next/link';
 
 export default function WalkthroughPreview() {
     return (
@@ -43,10 +44,12 @@ export default function WalkthroughPreview() {
                             viewport={{ once: true }}
                             transition={{ delay: 0.2 }}
                         >
-                            <Button size="lg" className="rounded-full bg-white text-black hover:bg-zinc-200 px-8 group">
-                                View Walkthrough
-                                <ChevronRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                            </Button>
+                            <Link href="/walkthrough">
+                                <Button size="lg" className="rounded-full bg-white text-black hover:bg-zinc-200 px-8 group">
+                                    View Walkthrough
+                                    <ChevronRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                </Button>
+                            </Link>
                         </motion.div>
                     </div>
 

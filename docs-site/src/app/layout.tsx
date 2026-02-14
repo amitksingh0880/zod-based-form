@@ -2,6 +2,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/navbar';
 import SmoothScroll from '@/components/smooth-scroll';
+import { Toaster } from 'sonner';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -22,6 +23,7 @@ export default function RootLayout({
           <Navbar />
           <main>{children}</main>
         </SmoothScroll>
+        <Toaster position="bottom-right" theme="dark" richColors />
       </body>
     </html>
   );

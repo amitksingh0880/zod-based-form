@@ -1,11 +1,26 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Github, Package } from 'lucide-react';
+import MobileNav from '@/components/mobile-nav';
 
 export default function Navbar() {
+    const pathname = usePathname();
+
+    const scrollToPlayground = () => {
+        if (pathname === '/') {
+            const playground = document.getElementById('playground');
+            if (playground) {
+                playground.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        } else {
+            window.location.href = '/#playground';
+        }
+    };
+
     return (
         <motion.nav
             initial={{ y: -100, opacity: 0 }}
@@ -22,7 +37,8 @@ export default function Navbar() {
                 </Link>
             </div>
 
-            <div className="flex items-center gap-6">
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center gap-6">
                 <Link href="/docs" className="text-sm font-medium text-zinc-400 hover:text-white transition-colors">
                     Documentation
                 </Link>
@@ -30,16 +46,22 @@ export default function Navbar() {
                     Walkthrough
                 </Link>
                 <div className="h-4 w-[1px] bg-zinc-800" />
-                <Link href="https://github.com" target="_blank" rel="noopener noreferrer">
+                <Link href="https://github.com/amitksingh0880/zod-based-form" target="_blank" rel="noopener noreferrer">
                     <Github className="w-5 h-5 text-zinc-400 hover:text-white transition-colors" />
                 </Link>
-                <Link href="https://npmjs.com" target="_blank" rel="noopener noreferrer">
+                <Link href="https://www.npmjs.com/package/zod-based-form" target="_blank" rel="noopener noreferrer">
                     <Package className="w-5 h-5 text-zinc-400 hover:text-white transition-colors" />
                 </Link>
-                <Button className="rounded-full bg-white text-black hover:bg-zinc-200 transition-all font-semibold">
+                <Button
+                    onClick={scrollToPlayground}
+                    className="rounded-full bg-white text-black hover:bg-zinc-200 transition-all font-semibold"
+                >
                     Get Started
                 </Button>
             </div>
+
+            {/* Mobile Navigation */}
+            <MobileNav />
         </motion.nav>
     );
 }
