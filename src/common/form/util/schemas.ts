@@ -31,10 +31,10 @@ export const dateTimeSchema = z.object({
 
 // File Upload Schema
 export const fileUploadSchema = z.object({
-  avatar: z.instanceof(File).optional().describe('Profile Picture'),
-  documents: z.array(z.instanceof(File)).describe('Documents'),
-  multiFiles: z.instanceof(FileList).optional().describe('Multiple Files'),
-  resume: z.instanceof(File).describe('Resume'),
+  avatar: z.instanceof(typeof File !== 'undefined' ? File : Object).optional().describe('Profile Picture'),
+  documents: z.array(z.instanceof(typeof File !== 'undefined' ? File : Object)).describe('Documents'),
+  multiFiles: z.instanceof(typeof FileList !== 'undefined' ? FileList : Object).optional().describe('Multiple Files'),
+  resume: z.instanceof(typeof File !== 'undefined' ? File : Object).describe('Resume'),
 });
 
 // Nested Object Schema
@@ -81,10 +81,10 @@ export const profileSchema = z.object({
       value: z.string().min(1, 'Value is required').describe('Contact Value'),
     })
   ).describe('Contacts'),
-  avatar: z.instanceof(File).optional().describe('Profile Picture'),
-  documents: z.array(z.instanceof(File)).describe('Documents'),
+  avatar: z.instanceof(typeof File !== 'undefined' ? File : Object).optional().describe('Profile Picture'),
+  documents: z.array(z.instanceof(typeof File !== 'undefined' ? File : Object)).describe('Documents'),
   bio: z.string().min(100, 'Bio must be at least 100 characters').optional().describe('Biography'),
-  multiFiles: z.instanceof(FileList).optional().describe('Multiple Files'),
+  multiFiles: z.instanceof(typeof FileList !== 'undefined' ? FileList : Object).optional().describe('Multiple Files'),
 });
 
 // Advanced Types Schema
@@ -92,21 +92,21 @@ export const advancedTypesSchema = z.object({
   // Record types
   metadata: z.record(z.string(), z.any()).describe('Metadata'),
   settings: z.record(z.string(), z.boolean()).describe('Settings'),
-  
+
   // Map and Set types
   preferences: z.map(z.string(), z.string()).describe('Preferences'),
   categories: z.set(z.string()).describe('Categories'),
-  
+
   // BigInt and Symbol
   largeNumber: z.bigint().describe('Large Number'),
   symbol: z.symbol().describe('Symbol'),
-  
+
   // Intersection
   userWithId: z.intersection(
     userSchema,
     z.object({ id: z.string().uuid() })
   ).describe('User with ID'),
-  
+
   // Discriminated Union
   event: z.discriminatedUnion('type', [
     z.object({ type: z.literal('email'), email: z.string().email() }),
@@ -142,7 +142,7 @@ export const orderSchema = z.object({
 });
 
 // Lazy Schema (for recursive types)
-export const lazySchema: z.ZodLazy<z.ZodTypeAny> = z.lazy(() => 
+export const lazySchema: z.ZodLazy<z.ZodTypeAny> = z.lazy(() =>
   z.object({
     name: z.string(),
     children: z.array(lazySchema).optional(),
@@ -155,26 +155,26 @@ export const comprehensiveTestSchema = z.object({
   name: z.string().min(1, 'Name is required').describe('Full Name'),
   age: z.number().min(18, 'Must be at least 18').describe('Age'),
   isActive: z.boolean().describe('Active Status'),
-  
+
   // Enums and unions
   role: z.enum(['admin', 'user', 'guest']).describe('User Role'),
   status: z.union([z.string(), z.number()]).describe('Status'),
-  
+
   // Dates
   birthDate: z.date().describe('Date of Birth'),
-  
+
   // Files
-  avatar: z.instanceof(File).optional().describe('Profile Picture'),
-  
+  avatar: z.instanceof(typeof File !== 'undefined' ? File : Object).optional().describe('Profile Picture'),
+
   // Nested objects
   address: z.object({
     street: z.string().describe('Street'),
     city: z.string().describe('City'),
   }).describe('Address'),
-  
+
   // Arrays
   hobbies: z.array(z.string()).describe('Hobbies'),
-  
+
   // Complex nested structure
   profile: z.object({
     user: userSchema.describe('User Information'),
@@ -190,7 +190,7 @@ export const simpleTestSchema = z.object({
   isActive: z.boolean(),
   status: z.enum(['active', 'inactive']),
   startDate: z.date(),
-  avatar: z.instanceof(File),
+  avatar: z.instanceof(typeof File !== 'undefined' ? File : Object),
   address: z.object({
     street: z.string(),
     city: z.string(),
