@@ -16,102 +16,140 @@ export default function MobileNav() {
     const [isOpen, setIsOpen] = useState(false);
     const pathname = usePathname();
 
+    const menuVariants = {
+        closed: {
+            x: '100%',
+            transition: {
+                duration: 0.6,
+                ease: "circOut"
+            }
+        },
+        open: {
+            x: 0,
+            transition: {
+                duration: 0.6,
+                ease: "circOut"
+            }
+        }
+    };
+
+    const linkVariants = {
+        closed: { opacity: 0, x: 20 },
+        open: (i: number) => ({
+            opacity: 1,
+            x: 0,
+            transition: {
+                delay: 0.1 + i * 0.1,
+                duration: 0.5,
+                ease: "circOut"
+            }
+        })
+    };
+
+    const navLinks = [
+        { href: '/docs', label: 'Documentation' },
+        { href: '/walkthrough', label: 'Walkthrough' },
+    ];
+
     const scrollToPlayground = () => {
-        const playground = document.getElementById('playground');
-        if (playground) {
-            playground.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            setIsOpen(false);
+        setIsOpen(false);
+        if (pathname === '/') {
+            const playground = document.getElementById('playground');
+            if (playground) {
+                playground.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         } else {
             window.location.href = '/#playground';
         }
     };
 
     return (
-        <div className="md:hidden">
-            {/* Hamburger Button */}
+        <div className="flex items-center">
             <button
-                onClick={() => setIsOpen(!isOpen)}
-                className="p-2 text-zinc-400 hover:text-white transition-colors"
-                aria-label="Toggle menu"
+                onClick={() => setIsOpen(true)}
+                className="p-3 rounded-full bg-white/5 border border-white/10 text-white/70 hover:text-white transition-all active:scale-90"
             >
-                {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                <Menu className="w-5 h-5" />
             </button>
 
-            {/* Mobile Menu Overlay */}
             <AnimatePresence>
                 {isOpen && (
                     <>
-                        {/* Backdrop */}
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={() => setIsOpen(false)}
-                            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 top-[73px]"
+                            className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md"
                         />
-
-                        {/* Menu Panel */}
                         <motion.div
-                            initial={{ x: '100%' }}
-                            animate={{ x: 0 }}
-                            exit={{ x: '100%' }}
-                            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                            className="fixed right-0 top-[73px] bottom-0 w-[280px] bg-zinc-950 border-l border-white/10 z-50 p-6 overflow-y-auto"
+                            variants={menuVariants}
+                            initial="closed"
+                            animate="open"
+                            exit="closed"
+                            className="fixed inset-y-4 right-4 z-50 w-[min(calc(100vw-32px),400px)] bg-zinc-950/90 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] overflow-hidden shadow-2xl"
                         >
-                            <nav className="space-y-6">
-                                {/* Navigation Links */}
-                                <div className="space-y-2">
-                                    {navLinks.map((link) => (
-                                        <Link
+                            <div className="flex flex-col h-full p-8 md:p-12">
+                                <div className="flex items-center justify-between mb-16">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-purple-500 p-[1px]">
+                                            <div className="w-full h-full rounded-[11px] bg-black flex items-center justify-center font-bold text-lg text-white">Z</div>
+                                        </div>
+                                        <span className="font-bold text-xl text-white/90 tracking-tight">zod-based-form</span>
+                                    </div>
+                                    <button
+                                        onClick={() => setIsOpen(false)}
+                                        className="p-3 rounded-full bg-white/5 border border-white/10 text-white/70 hover:text-white transition-all active:scale-90"
+                                    >
+                                        <X className="w-5 h-5" />
+                                    </button>
+                                </div>
+
+                                <div className="flex flex-col gap-6">
+                                    {navLinks.map((link, i) => (
+                                        <motion.div
                                             key={link.href}
-                                            href={link.href}
-                                            onClick={() => setIsOpen(false)}
-                                            className={`block px-4 py-3 rounded-lg text-sm font-medium transition-all ${pathname === link.href
-                                                    ? 'bg-white/10 text-white'
-                                                    : 'text-zinc-400 hover:text-white hover:bg-white/5'
-                                                }`}
+                                            custom={i}
+                                            variants={linkVariants}
                                         >
-                                            {link.title}
-                                        </Link>
+                                            <Link
+                                                href={link.href}
+                                                onClick={() => setIsOpen(false)}
+                                                className="text-4xl md:text-5xl font-bold text-white/40 hover:text-white transition-all block"
+                                            >
+                                                {link.label}
+                                            </Link>
+                                        </motion.div>
                                     ))}
                                 </div>
 
-                                {/* Divider */}
-                                <div className="h-[1px] bg-zinc-800" />
-
-                                {/* External Links */}
-                                <div className="space-y-2">
-                                    <Link
-                                        href="https://github.com/amitksingh0880/zod-based-form"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition-all"
+                                <div className="mt-auto pt-12">
+                                    <div className="flex gap-4 mb-8">
+                                        <Link
+                                            href="https://github.com/amitksingh0880/zod-based-form"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="p-4 rounded-3xl bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition-all flex-1 flex justify-center backdrop-blur-lg"
+                                        >
+                                            <Github className="w-7 h-7" />
+                                        </Link>
+                                        <Link
+                                            href="https://www.npmjs.com/package/zod-based-form"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="p-4 rounded-3xl bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition-all flex-1 flex justify-center backdrop-blur-lg"
+                                        >
+                                            <Package className="w-7 h-7" />
+                                        </Link>
+                                    </div>
+                                    <Button
+                                        onClick={scrollToPlayground}
+                                        className="w-full h-16 rounded-3xl bg-white text-black hover:bg-zinc-200 transition-all font-bold text-xl shadow-2xl shadow-white/10"
                                     >
-                                        <Github className="w-5 h-5" />
-                                        GitHub
-                                    </Link>
-                                    <Link
-                                        href="https://www.npmjs.com/package/zod-based-form"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition-all"
-                                    >
-                                        <Package className="w-5 h-5" />
-                                        npm Package
-                                    </Link>
+                                        Get Started
+                                    </Button>
                                 </div>
-
-                                {/* Divider */}
-                                <div className="h-[1px] bg-zinc-800" />
-
-                                {/* CTA Button */}
-                                <Button
-                                    onClick={scrollToPlayground}
-                                    className="w-full rounded-full bg-white text-black hover:bg-zinc-200 transition-all font-semibold"
-                                >
-                                    Get Started
-                                </Button>
-                            </nav>
+                            </div>
                         </motion.div>
                     </>
                 )}

@@ -13,56 +13,64 @@ export default function Hero() {
     });
 
     const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-    const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.9]);
-    const y = useTransform(scrollYProgress, [0, 0.5], [0, 100]);
+    const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
+    const y = useTransform(scrollYProgress, [0, 0.5], [0, 50]);
 
     return (
-        <section ref={containerRef} className="relative h-screen flex flex-col items-center justify-center overflow-hidden bg-black pt-20">
-            {/* Background Glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-purple-600/20 blur-[120px] rounded-full" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-indigo-600/10 blur-[100px] rounded-full delay-700" />
+        <section ref={containerRef} className="relative min-h-[110vh] flex flex-col items-center justify-center overflow-hidden bg-[#030303] pt-32 pb-20">
+            {/* Mesh Gradient Background */}
+            <div className="absolute inset-0 z-0">
+                <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-primary/20 blur-[150px] rounded-full animate-pulse" />
+                <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-indigo-500/10 blur-[150px] rounded-full animate-pulse delay-1000" />
+                <div className="absolute top-[20%] right-[10%] w-[30%] h-[30%] bg-purple-500/10 blur-[120px] rounded-full animate-pulse delay-500" />
+            </div>
+
+            {/* Noise Texture */}
+            <div className="absolute inset-0 z-[1] opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
 
             <motion.div
                 style={{ opacity, scale, y }}
-                className="relative z-10 flex flex-col items-center text-center px-4"
+                className="relative z-10 flex flex-col items-center text-center px-6"
             >
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
+                    initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                    className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-xs font-medium text-zinc-300 mb-8"
+                    transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                    className="group cursor-default inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/5 bg-white/5 backdrop-blur-2xl text-[13px] font-semibold text-white/70 mb-10 hover:border-white/20 transition-all hover:bg-white/10"
                 >
-                    <Sparkles className="w-3.5 h-3.5 text-purple-400" />
-                    <span>The most powerful form library for Zod</span>
+                    <Sparkles className="w-4 h-4 text-primary animate-pulse" />
+                    <span>Revolutionizing Form Development with Zod</span>
+                    <div className="w-1 h-1 rounded-full bg-white/20 mx-1" />
+                    <span className="text-white/40">v0.1.0</span>
                 </motion.div>
 
                 <motion.h1
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ opacity: 0, y: 40 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                    className="text-6xl md:text-8xl font-bold tracking-tighter text-white mb-6 max-w-4xl"
+                    transition={{ duration: 1.2, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+                    className="text-7xl md:text-[10rem] font-bold tracking-[-0.04em] leading-[0.9] text-white mb-10 max-w-6xl drop-shadow-2xl"
                 >
-                    Forms built for <br />
-                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
-                        Speed and Safety.
+                    Build Forms at <br />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-white/20">
+                        The Speed of Thought.
                     </span>
                 </motion.h1>
 
                 <motion.p
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ opacity: 0, y: 40 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                    className="text-lg md:text-xl text-zinc-400 mb-10 max-w-2xl leading-relaxed"
+                    transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                    className="text-xl md:text-2xl text-white/50 mb-14 max-w-3xl leading-relaxed font-medium"
                 >
-                    Generate complex, type-safe React forms from your favorite Zod schemas.
-                    Dynamic, flexible, and developer-friendly.
+                    The most powerful form engine for React. Generate complex, type-safe, <br className="hidden md:block" />
+                    and extremely beautiful forms directly from your Zod schemas.
                 </motion.p>
 
                 <motion.div
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ opacity: 0, y: 40 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                    className="flex flex-col sm:flex-row gap-4"
+                    transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                    className="flex flex-col sm:flex-row gap-6 mb-32"
                 >
                     <Button
                         size="lg"
@@ -72,10 +80,10 @@ export default function Hero() {
                                 playground.scrollIntoView({ behavior: 'smooth', block: 'start' });
                             }
                         }}
-                        className="h-14 px-8 rounded-full bg-white text-black hover:bg-zinc-200 transition-all font-bold group"
+                        className="h-16 px-10 rounded-2xl bg-white text-black hover:bg-zinc-100 hover:scale-105 active:scale-95 transition-all font-bold text-lg shadow-2xl shadow-white/20 group"
                     >
-                        Start Building
-                        <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        Explore Playground
+                        <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     </Button>
                     <Button
                         variant="outline"
@@ -87,39 +95,40 @@ export default function Hero() {
                                 description: 'npm install zod-based-form',
                             });
                         }}
-                        className="h-14 px-8 rounded-full border-zinc-800 bg-black hover:bg-zinc-900 text-white transition-all font-semibold"
+                        className="h-16 px-10 rounded-2xl border-white/10 bg-white/5 hover:bg-white/10 text-white transition-all font-bold text-lg backdrop-blur-xl group relative overflow-hidden"
                     >
-                        npm install zod-based-form
+                        <span className="flex items-center gap-3">
+                            <Zap className="w-5 h-5 text-primary group-hover:scale-125 transition-transform" />
+                            npm install zod-based-form
+                        </span>
                     </Button>
                 </motion.div>
 
-                {/* Feature Grid Animation */}
+                {/* Refined Feature Grid */}
                 <motion.div
                     initial={{ opacity: 0, y: 60 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                    className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-24 max-w-5xl"
+                    transition={{ duration: 1.2, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                    className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl w-full"
                 >
-                    <div className="flex flex-col items-center p-6 rounded-2xl border border-white/5 bg-white/5 backdrop-blur-md">
-                        <Zap className="w-8 h-8 text-indigo-400 mb-4" />
-                        <h3 className="text-white font-semibold mb-2">Lightning Fast</h3>
-                        <p className="text-sm text-zinc-500">Optimized for performance with minimal re-renders.</p>
-                    </div>
-                    <div className="flex flex-col items-center p-6 rounded-2xl border border-white/5 bg-white/5 backdrop-blur-md">
-                        <ShieldCheck className="w-8 h-8 text-purple-400 mb-4" />
-                        <h3 className="text-white font-semibold mb-2">Type Safe</h3>
-                        <p className="text-sm text-zinc-500">Full TypeScript support and Zod validation integration.</p>
-                    </div>
-                    <div className="flex flex-col items-center p-6 rounded-2xl border border-white/5 bg-white/5 backdrop-blur-md">
-                        <Sparkles className="w-8 h-8 text-pink-400 mb-4" />
-                        <h3 className="text-white font-semibold mb-2">Dynamic</h3>
-                        <p className="text-sm text-zinc-500">Easily create complex forms with dynamic field logic.</p>
-                    </div>
+                    {[
+                        { icon: Zap, color: "text-primary", title: "Instant Setup", desc: "From schema to working form in seconds." },
+                        { icon: ShieldCheck, color: "text-purple-400", title: "Type Safety", desc: "No more runtime errors. Pure TypeScript bliss." },
+                        { icon: Sparkles, color: "text-indigo-400", title: "Dynamic Logic", desc: "Complex conditional fields, made simple." }
+                    ].map((feature, i) => (
+                        <div key={i} className="group text-left p-8 rounded-[2rem] border border-white/5 bg-white/[0.02] backdrop-blur-3xl hover:bg-white/[0.05] hover:border-white/10 transition-all">
+                            <div className={`p-3 rounded-2xl bg-white/5 w-fit mb-6 group-hover:scale-110 transition-transform`}>
+                                <feature.icon className={`w-6 h-6 ${feature.color}`} />
+                            </div>
+                            <h3 className="text-xl font-bold text-white mb-3 tracking-tight">{feature.title}</h3>
+                            <p className="text-white/40 leading-relaxed font-medium">{feature.desc}</p>
+                        </div>
+                    ))}
                 </motion.div>
             </motion.div>
 
-            {/* Decorative Gradient Line */}
-            <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-zinc-800 to-transparent" />
+            {/* Bottom Glow */}
+            <div className="absolute bottom-[-20%] left-1/2 -translate-x-1/2 w-[80%] h-[40%] bg-primary/10 blur-[150px] rounded-full" />
         </section>
     );
 }
