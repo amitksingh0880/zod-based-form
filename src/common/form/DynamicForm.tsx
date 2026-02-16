@@ -39,8 +39,12 @@ export const DynamicForm = <T extends z.ZodTypeAny>({
   defaultShowErrors = true,
   loading = false,
 }: DynamicFormProps<T>) => {
-  // Validate and prepare schema
-  if (!schema || !(schema instanceof z.ZodType)) {
+  // Validate and prepare schema - use a more robust check
+  const isValidZodSchema = (s: any): boolean => {
+    return s && typeof s === 'object' && s !== null && typeof s.safeParse === 'function' && '_def' in s;
+  };
+
+  if (!schema || !isValidZodSchema(schema)) {
     console.error(`Invalid schema passed to DynamicForm:`, schema);
     return (
       <Card className="bg-destructive/10 border-destructive">
@@ -56,9 +60,26 @@ export const DynamicForm = <T extends z.ZodTypeAny>({
 
   // Check if schema is a ZodObject (required for form generation)
   let schemaToUse: z.ZodTypeAny = schema as unknown as z.ZodTypeAny;
-  if (!(schema instanceof z.ZodObject)) {
+
+  console.log('=== DYNAMICFORM DEBUG ===');
+  console.log('Schema:', schema);
+  console.log('Schema._def:', (schema as any)?._def);
+  console.log('Schema._def.typeName:', (schema as any)?._def?.typeName);
+  console.log('Has shape:', 'shape' in (schema as any));
+
+  const isZodObject = (s: any): boolean => {
+    // Check for shape property which is unique to ZodObject
+    return s && s._def && (s._def.typeName === 'ZodObject' || 'shape' in s);
+  };
+
+  const isZodObjectResult = isZodObject(schema);
+  console.log('isZodObject result:', isZodObjectResult);
+  console.log('=========================');
+
+  if (!isZodObjectResult) {
     // Try to wrap non-object schemas in an object
-    if (schema instanceof z.ZodString || schema instanceof z.ZodNumber || schema instanceof z.ZodBoolean) {
+    const typeName = (schema as any)?._def?.typeName;
+    if (typeName === 'ZodString' || typeName === 'ZodNumber' || typeName === 'ZodBoolean') {
       console.warn(`Single field schema detected, wrapping in object`);
       schemaToUse = z.object({ value: schema as unknown as z.ZodTypeAny });
     } else {
@@ -71,7 +92,7 @@ export const DynamicForm = <T extends z.ZodTypeAny>({
           <CardContent>
             <p className="text-sm text-destructive">
               Schema must be a ZodObject for form generation.
-              Current type: {(schema as any)?._def?.typeName || 'Unknown'}
+              Current type: {typeName || 'Unknown'}
             </p>
           </CardContent>
         </Card>

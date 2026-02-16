@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
-import { z, ZodType } from 'zod';
+import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DynamicForm } from 'zod-based-form';
@@ -32,13 +32,30 @@ export default function Playground() {
                 const func = new Function('z', `return ${code}`);
                 const result = func(z);
 
-                if (result instanceof ZodType) {
+                console.log('=== PLAYGROUND DEBUG ===');
+                console.log('Result:', result);
+                console.log('Result type:', typeof result);
+                console.log('Has safeParse:', typeof result?.safeParse);
+                console.log('Has _def:', result?._def);
+
+                // Robust check: verify it's a Zod schema by checking for safeParse method
+                const isValidZodSchema = result &&
+                    typeof result === 'object' &&
+                    result !== null &&
+                    typeof result.safeParse === 'function' &&
+                    '_def' in result;
+
+                console.log('isValidZodSchema:', isValidZodSchema);
+                console.log('========================');
+
+                if (isValidZodSchema) {
                     setSchema(result as z.ZodObject<any>);
                     setError(null);
                 } else {
                     setError('Code must return a valid Zod schema');
                 }
             } catch (e: any) {
+                console.error('Playground error:', e);
                 setError(e.message);
             } finally {
                 setIsGenerating(false);
